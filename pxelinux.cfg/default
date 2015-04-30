@@ -1,0 +1,21 @@
+default syslinux/menu.c32
+prompt 3
+timeout 15
+
+menu title ArchLinux Bootstrap Install
+
+label archboot-latest-x86_64
+  menu label ArchBoot Install Script (x64)
+  kernel http://mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/vmlinuz_x86_64 root=ramfs
+  initrd http://mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/initramfs_x86_64.img
+
+label archboot-latest-i386
+  menu label ArchBoot Install Script (x86)
+  kernel http://mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/vmlinuz_i686
+  initrd http://mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/initramfs_i686.img
+
+label coreos
+  menu label CoreOS Stable
+  kernel http://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe.vmlinuz 
+  initrd http://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe_image.cpio.gz
+  append sshkey="ssh-rsa AAAA..........OtBKKG/++o" coreos pxe demo

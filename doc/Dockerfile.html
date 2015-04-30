@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+
+  <title>File: Dockerfile [RDoc Documentation]</title>
+
+  <link type="text/css" media="screen" href="./rdoc.css" rel="stylesheet" />
+
+  <script src="./js/jquery.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/thickbox-compressed.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/quicksearch.js" type="text/javascript"
+    charset="utf-8"></script>
+  <script src="./js/darkfish.js" type="text/javascript"
+    charset="utf-8"></script>
+</head>
+
+<body class="file">
+  <div id="metadata">
+    <div id="home-metadata">
+      <div id="home-section" class="section">
+        <h3 class="section-header">
+          <a href="./index.html">Home</a>
+          <a href="./index.html#classes">Classes</a>
+          <a href="./index.html#methods">Methods</a>
+        </h3>
+      </div>
+    </div>
+
+    <div id="project-metadata">
+      
+      
+      <div id="fileindex-section" class="section project-section">
+        <h3 class="section-header">Files</h3>
+        <ul>
+        
+          <li class="file"><a href="./Dockerfile.html">Dockerfile</a></li>
+        
+          <li class="file"><a href="./pxelinux_cfg/default.html">default</a></li>
+        
+        </ul>
+      </div>
+      
+
+      <div id="classindex-section" class="section project-section">
+        <h3 class="section-header">Class Index
+          <span class="search-toggle"><img src="./images/find.png"
+            height="16" width="16" alt="[+]"
+            title="show/hide quicksearch" /></span></h3>
+        <form action="#" method="get" accept-charset="utf-8" class="initially-hidden">
+        <fieldset>
+          <legend>Quicksearch</legend>
+          <input type="text" name="quicksearch" value=""
+            class="quicksearch-field" />
+        </fieldset>
+        </form>
+
+        <ul class="link-list">
+        
+        </ul>
+        <div id="no-class-search-results" style="display: none;">No matching classes.</div>
+      </div>
+
+      
+    </div>
+  </div>
+
+  <div id="documentation">
+    
+<p>FROM ubuntu:14.04</p>
+
+<p>MAINTAINER Chris Pergrossi &lt;c.pergrossi@ufl.edu&gt;</p>
+
+<p># # Complete PXE Boot Server # # Usage:  docker run -ti -v
+unpacked_isos:/images -v cfg:/cfg –net=host geard/pxeserve # # #   DHCP
+Proxy: #     This image starts up a dnsmasq server in proxy DHCP mode and
+by default #     listens to the broadcast address on PRIVATE ip ranges
+only.  The proxy  #     dhcp server works alongide your existing dhcp
+server to append next-server #     and filename DHCP options (67, and 68). 
+The reason for –net=host is that #     broadcast m # #   HTTP Boot: #    
+Rather than use old, slow, and insecure TFTP, we’ve migrated to HTTP!   #  
+By default we start our own instance of lightppd and server the #    
+/images folder directly over http(s).  NOTE: any iso files wil be # #  
+Configuration: #     This is the hardest part of setting up new ISO images.
+To add a new ISO to be #     net-booted, follow these steps: # #     1.
+Mount the iso to loopback: # #        #  mount path/to/installcd.iso /mnt #
+#     2. Browse the ISO filesystem, looking for the provided kernel and
+initrd files #            (or equivalent for other POSIX systems) # #      
+#  cd /mnt &amp;&amp; find . -name ‘vmlinuz*’ -or -name ‘initrd*’ # #      
+NOTE: this won’t work for all OS types, look through the filesystem for #  
+keywords like ‘netboot’, ‘boot’, ‘installer’ etc. # #     3. Copy the
+kernel and the initramfs image to the folder you provide the PXE server # #
+#  mkdir -p ~/pxe/images/ubuntu/15.04/server-x86_64/ &amp;&amp; cp -Ra
+{vmlinuz,initrd.gz} $_ # #       [optional]: Some distros include syslinux
+configuration files such as graphics, #                   preset boot
+options, etc. nearby (named isolinux.cfg or similar).  These can #         
+also be copied to the images folder and included for your pxe clients. # # 
+[alternative]:  #           Depending on your needs, you might copy the
+entire ISO filesystem to the images directory, #           or even the ISO
+itself, to provide installation files or custom programs for the
+distributed #           operating system. # #       [protip]: You might not
+even need an ISO at all; most distributions have extracted copies of their
+#                 ISO’s available on their website, which you may boot from
+directly if you can spare the  #                 bandwidth. # #     4.
+Generate an appropriate pxelinux .cfg file for your images and drop into
+the ‘/cfg’ volume. see  # #                         <a
+href="http://www.syslinux.org/wiki/index.php/PXELINUX">www.syslinux.org/wiki/index.php/PXELINUX</a>
+# #         for detailed instructions and advanced configuration options. #
+#     EXAMPLES: # #        Boot an ArchLinux installer or a CoreOS LiveCD
+over HTTP. # #          # cat &lt;&lt;EOF &gt; cfg/archlinux.cfg #         
+default syslinux/menu.c32 #          prompt 3 #          timeout 15 # #    
+menu title ArchLinux Bootstrap Install # #          label
+archboot-latest-x86_64 #             menu label ArchBoot Install Script
+(x64) #             kernel <a
+href="http://mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/vmlinuz_x86_64">mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/vmlinuz_x86_64</a>
+root=ramfs #             initrd <a
+href="http://mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/initramfs_x86_64.img">mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/initramfs_x86_64.img</a>
+# #          label archboot-latest-i386 #              menu label ArchBoot
+Install Script (x86) #              kernel <a
+href="http://mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/vmlinuz_i686">mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/vmlinuz_i686</a>
+#              initrd <a
+href="http://mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/initramfs_i686.img">mirror.rackspace.com/archlinux/iso/archboot/2015.01/boot/initramfs_i686.img</a>
+# #          label coreos #              menu label CoreOS Stable #        
+kernel <a
+href="http://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe.vmlinuz">stable.release.core-os.net/amd64-usr/current/coreos_production_pxe.vmlinuz</a>
+#              initrd <a
+href="http://stable.release.core-os.net/amd64-usr/current/coreos_production_pxe_image.cpio.gz">stable.release.core-os.net/amd64-usr/current/coreos_production_pxe_image.cpio.gz</a>
+#              append sshkey=“ssh-rsa AAAA.….…..OtBKKG/++o” coreos pxe demo
+#</p>
+
+<p>RUN apt-get update &amp;&amp; apt-get install -y dnsmasq lighttpd syslinux</p>
+
+<p>RUN mkdir -p /pxe/images /pxe/pxelinux.cfg /pxe/syslinux /pxe/cfg</p>
+
+<p>COPY images       /pxe/images COPY cfg          /pxe/cfg COPY pxelinux.cfg
+/pxe/pxelinux.cfg</p>
+
+<p>RUN cp -Ra /usr/lib/syslinux/* /pxe/syslinux/</p>
+
+<pre>chown nobody:www-data -R /pxe</pre>
+
+<p>RUN cat &lt;&lt;-EOF &gt; /etc/dnsmasq.conf port=0 log-dhcp bind-dynamic
+dhcp-range=$PROXY_IP,proxy dhcp-boot=<a
+href="http://$HTTP_IP:$HTTP_PORT/pxelinux.0">$HTTP_IP:$HTTP_PORT/pxelinux.0</a>
+pxe-service=123456789,“Install Linux”,pxelinux,0 EOF</p>
+
+<p>RUN cat &lt;&lt;-EOF &gt; /etc/lighttpd/lighttpd.conf server.modules = ()</p>
+
+<p>server.document-root        = “/srv/” server.errorlog             =
+“/var/log/lighttpd/error.log” server.pid-file             =
+“/var/run/lighttpd.pid” server.username             = “www-data”
+server.groupname            = “www-data” server.port                 = 80</p>
+
+<p>index-file.names            = ( “index.html” )</p>
+
+<p>include_shell “/usr/share/lighttpd/create-mime.assign.pl” EOF</p>
+
+<p>ENTRYPOINT [‘/bin/bash’, ‘-c’, ‘service dnsmasq start; service lighttpd
+start’)</p>
+
+<p>CMD [‘/bin/bash’, ‘-c’]</p>
+
+  </div>
+
+  <div id="validator-badges">
+    <p><small><a href="http://validator.w3.org/check/referer">[Validate]</a></small></p>
+    <p><small>Generated with the <a href="http://deveiate.org/projects/Darkfish-Rdoc/">Darkfish
+      Rdoc Generator</a> 2</small>.</p>
+  </div>
+</body>
+</html>
+
