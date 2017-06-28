@@ -12,6 +12,25 @@ using a docker container and whatever configuration file you want to construct.
 
     # edit config file at cfg/
 
+    vim cfg/dnsmasq.conf
+
+        # change the IP address to the subnet your host machine is on
+        dhcp-range=___.___.___.255,proxy
+
+        # change the IP address to the exact IP address of the host machine
+        dhcp-boot=http://___.___.___.___:5000/pxelinux.0
+
+    # edit the PXE configuration at pxelinux.cfg/
+
+    vim pxelinux.cfg/default
+
+        # you can read the examples I've included as well as search Google for other ways of PXE booting
+        label MiscISO
+            menu label Random ISO Disk
+            root (hd0,0)
+            kernel syslinux/memdisk
+            append iso initrd=some_iso.iso raw
+
     make build
     make run
 
